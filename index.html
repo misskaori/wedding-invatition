@@ -1,202 +1,223 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loading and Enter</title>
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #f0f0f0;
-            font-family: Arial, sans-serif;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Liu & Sun Wedding Day</title>
+  <link rel="icon" href="icon.png" type="image/png">
+  <style>
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f0f0f0;
+      font-family: Arial, sans-serif;
+    }
 
-        .loading-screen {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            z-index: 1000;
-        }
+    .loading-screen {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.8);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 1000;
+    }
 
-        .progress-bar {
-            width: 80%;
-            height: 20px;
-            background-color: #ddd;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-bottom: 20px;
-        }
+    .loading-text {
+      color: #76c7c0;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
 
-        .progress-bar-inner {
-            height: 100%;
-            width: 0;
-            background-color: #76c7c0;
-            border-radius: 10px;
-            transition: width 0.3s;
-        }
 
-        .enter-button {
-            display: none;
-            padding: 10px 20px;
-            background-color: #76c7c0;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
+    /* video {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      z-index: -1;
+    } */
 
-        .enter-button:focus {
-            outline: none;
-        }
+    .progress-bar {
+      width: 80%;
+      height: 20px;
+      background-color: #ddd;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
 
-        .hidden {
-            display: none;
-        }
+    .progress-bar-inner {
+      height: 100%;
+      width: 0;
+      background-color: #76c7c0;
+      border-radius: 10px;
+      transition: width 0.3s;
+    }
 
-        .scroll-container {
-            width: 100%;
-            height: 100%;
-            overflow-y: auto;
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
+    .enter-button {
+      display: none;
+      padding: 10px 20px;
+      background-color: #76c7c0;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
 
-        img {
-            width: 100%;
-            height: auto;
-        }
+    .enter-button:focus {
+      outline: none;
+    }
 
-        .music-icon {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 40px;
-            height: 40px;
-            background-image: url('music-player.png');
-            background-size: cover;
-            border-radius: 50%;
-            animation: rotateIcon 2s linear infinite; /* Animation for continuous rotation */
-        }
+    .hidden {
+      display: none;
+    }
 
-        /* .music-icon:before {
-            content: "";
-            display: block;
-            width: 20px;
-            height: 20px;
-            margin: 10px;
-            background-color: #fff;
-            border-radius: 50%;
-        } */
+    .scroll-container {
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
 
-        @keyframes rotateIcon {
-            from {
-                transform: rotate(0deg);
-            }
-            to {
-                transform: rotate(360deg);
-            }
-        }
+    img {
+      width: 100%;
+      height: auto;
+    }
 
-        .hidden {
-            display: none;
-        }
-    </style>
+    .music-icon {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 40px;
+      height: 40px;
+      background-image: url('music-player.png');
+      background-size: cover;
+      border-radius: 50%;
+      animation: rotateIcon 2s linear infinite;
+      /* Animation for continuous rotation */
+    }
+
+    @keyframes rotateIcon {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
 </head>
+
 <body>
-    <div class="loading-screen" id="loading-screen">
-        <div class="progress-bar">
-            <div class="progress-bar-inner" id="progress-bar-inner"></div>
-        </div>
-        <button class="enter-button" id="enter-button">Enter</button>
+  <div class="loading-screen" id="loading-screen">
+    <!-- <video autoplay loop muted>
+      <source src="background.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video> -->
+    <div class="loading-text">Loading...</div>
+    <div class="progress-bar">
+      <div class="progress-bar-inner" id="progress-bar-inner"></div>
     </div>
+    <button class="enter-button" id="enter-button">Enter</button>
+  </div>
 
-    <div class="scroll-container hidden" id="main-content">
-        <img data-src="invitation.png" alt="Long Image" class="lazy-load">
-    </div>
-    
-    <audio id="background-music" preload="auto" loop>
-        <source src="lover.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
-    <div class="music-icon hidden" id="music-icon"></div>
+  <div class="scroll-container hidden" id="main-content">
+    <img data-src="invitation.png" alt="Long Image" class="lazy-load">
+  </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var loadingScreen = document.getElementById('loading-screen');
-            var progressBarInner = document.getElementById('progress-bar-inner');
-            var enterButton = document.getElementById('enter-button');
-            var mainContent = document.getElementById('main-content');
-            var audio = document.getElementById('background-music');
-            var musicIcon = document.getElementById('music-icon');
-            var progress = 0;
+  <audio id="background-music" preload="auto" loop>
+    <source src="lover.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+  <div class="music-icon hidden" id="music-icon"></div>
 
-            // Simulate loading progress
-            var loadingInterval = setInterval(function() {
-                progress += 10;
-                progressBarInner.style.width = progress + '%';
-                
-                if (progress >= 100) {
-                    clearInterval(loadingInterval);
-                    enterButton.style.display = 'block';
-                }
-            }, 500);
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var loadingScreen = document.getElementById('loading-screen');
+      var progressBarInner = document.getElementById('progress-bar-inner');
+      var enterButton = document.getElementById('enter-button');
+      var mainContent = document.getElementById('main-content');
+      var audio = document.getElementById('background-music');
+      var musicIcon = document.getElementById('music-icon');
+      var progress = 0;
 
-            // Enter button click event
-            enterButton.addEventListener('click', function() {
-                loadingScreen.classList.add('hidden');
-                mainContent.classList.remove('hidden');
-                musicIcon.classList.remove('hidden');
+      // Simulate loading progress
+      var loadingInterval = setInterval(function () {
+        progress += 10;
+        progressBarInner.style.width = progress + '%';
 
-                // Auto-play audio
-                audio.volume = 0.5;
-                audio.play();
-            });
+        if (progress >= 100) {
+          clearInterval(loadingInterval);
+          enterButton.style.display = 'block';
+        }
+      }, 500);
 
-            // Lazy load images
-            let lazyLoadImages = document.querySelectorAll('img.lazy-load');
-            let lazyLoadThrottleTimeout;
+      // Enter button click event
+      enterButton.addEventListener('click', function () {
+        loadingScreen.classList.add('hidden');
+        mainContent.classList.remove('hidden');
+        musicIcon.classList.remove('hidden');
 
-            function lazyLoad() {
-                if (lazyLoadThrottleTimeout) {
-                    clearTimeout(lazyLoadThrottleTimeout);
-                }
+        // Auto-play audio
+        audio.volume = 0.5;
+        audio.play();
+      });
 
-                lazyLoadThrottleTimeout = setTimeout(function() {
-                    let scrollTop = window.pageYOffset;
-                    lazyLoadImages.forEach(function(img) {
-                        if (img.offsetTop < (window.innerHeight + scrollTop)) {
-                            img.src = img.dataset.src;
-                            img.classList.remove('lazy-load');
-                        }
-                    });
-                    if (lazyLoadImages.length == 0) {
-                        document.removeEventListener('scroll', lazyLoad);
-                        window.removeEventListener('resize', lazyLoad);
-                        window.removeEventListener('orientationChange', lazyLoad);
-                    }
-                }, 20);
+      // Lazy load images
+      let lazyLoadImages = document.querySelectorAll('img.lazy-load');
+      let lazyLoadThrottleTimeout;
+
+      function lazyLoad() {
+        if (lazyLoadThrottleTimeout) {
+          clearTimeout(lazyLoadThrottleTimeout);
+        }
+
+        lazyLoadThrottleTimeout = setTimeout(function () {
+          let scrollTop = window.pageYOffset;
+          lazyLoadImages.forEach(function (img) {
+            if (img.offsetTop < (window.innerHeight + scrollTop)) {
+              img.src = img.dataset.src;
+              img.classList.remove('lazy-load');
             }
+          });
+          if (lazyLoadImages.length == 0) {
+            document.removeEventListener('scroll', lazyLoad);
+            window.removeEventListener('resize', lazyLoad);
+            window.removeEventListener('orientationChange', lazyLoad);
+          }
+        }, 20);
+      }
 
-            document.addEventListener('scroll', lazyLoad);
-            window.addEventListener('resize', lazyLoad);
-            window.addEventListener('orientationChange', lazyLoad);
+      document.addEventListener('scroll', lazyLoad);
+      window.addEventListener('resize', lazyLoad);
+      window.addEventListener('orientationChange', lazyLoad);
 
-            lazyLoad(); // Initial call to load images if in viewport
-        });
-    </script>
+      lazyLoad(); // Initial call to load images if in viewport
+    });
+  </script>
 </body>
+
 </html>
