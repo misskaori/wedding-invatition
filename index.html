@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Liu & Sun Wedding Day</title>
     <link rel="icon" href="icon.png" type="image/png">
+    <script src=”http://res.wx.qq.com/open/js/jweixin-1.0.0.js”></script>
     <style>
         body {
             margin: 0;
@@ -63,30 +64,46 @@
 <div class="scroll-container">
     <img src="invitition.png" alt="Long Image">
 </div>
-<audio id="background-music" preload="auto" autoplay loop>
-    <source src="path/to/your/music.mp3" type="audio/mpeg">
+<audio id="background-music" preload="auto">
+    <source src="lover.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
 </audio>
-<!-- Icon for music -->
-<div class="music-icon"></div>
+<div class="music-icon hidden" id="music-icon"></div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var audio = document.getElementById('background-music');
-        var musicIcon = document.querySelector('.music-icon');
+        var musicIcon = document.getElementById('music-icon');
 
-        // 设置音量为 0.5（50% 音量）
-        audio.volume = 0.5;
-
-        // 音量控制按钮
-        musicIcon.addEventListener('click', function() {
-            if (audio.volume === 0) {
-                audio.volume = 0.5; // 如果音量为 0，设置为 50%
+        document.body.addEventListener('click', function() {
+            if (audio.paused) {
+                audio.volume = 0.5; // 设置音量为 0.5（50% 音量）
+                audio.play();
+                musicIcon.classList.remove('hidden'); // 显示旋转图标
             } else {
-                audio.volume = 0; // 如果音量不为 0，设置为 0（静音）
+                audio.pause();
+                musicIcon.classList.add('hidden'); // 隐藏旋转图标
+            }
+        });
+
+        // Auto-play audio on scroll (optional)
+        window.addEventListener('scroll', function() {
+            if (!audio.paused) return; // Do not autoplay if audio is already playing
+            var element = document.querySelector('.scroll-container');
+            var rect = element.getBoundingClientRect();
+            var windowHeight = window.innerHeight || document.documentElement.clientHeight;
+            if (rect.top < windowHeight && rect.bottom >= 0) {
+                audio.play();
+                musicIcon.classList.remove('hidden'); // 显示旋转图标
+            } else {
+                audio.pause();
+                musicIcon.classList.add('hidden'); // 隐藏旋转图标
             }
         });
     });
 </script>
+
+<div class="music-icon"></div>
+
 </body>
 </html>
