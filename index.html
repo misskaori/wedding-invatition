@@ -1,34 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
- 
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
-  <script src="//res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
-  <title>howler.js 测试自动播放 使用WeixinJSBridgeReady</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liu & Sun Wedding Day</title>
+    <link rel="icon" href="icon.png" type="image/png">
+    <script src=”http://res.wx.qq.com/open/js/jweixin-1.0.0.js”></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+        }
+
+        .scroll-container {
+            height: 100%;
+            width: 100%;
+            overflow-y: auto;
+            border: 2px solid #ccc;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            -webkit-overflow-scrolling: touch;
+            /* Enable smooth scrolling on iOS */
+        }
+
+        img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        audio {
+            display: none;
+            /* Hide the audio player */
+        }
+
+        /* Icon styles */
+        .music-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 40px;
+            height: 40px;
+            background-image: url('music-player.png');
+            background-size: cover;
+            border-radius: 50%;
+            animation: rotateIcon 2s linear infinite;
+            /* Animation for continuous rotation */
+        }
+
+        @keyframes rotateIcon {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
 </head>
- 
+
 <body>
-  使用WeixinJSBridge 安卓苹果均能自动播放
+    <div class="scroll-container">
+        <img data-src="invitation.png" alt="Long Image" class="lazy-load" src="invitation.png">
+    </div>
+    <!-- <audio id="background-music" preload="auto" autoplay loop>
+    <source src="lover.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+</audio> -->
+    <div class="music-icon hidden" id="music-icon"></div>
+
+    <script>
+        // document.addEventListener('DOMContentLoaded', function () {
+        // var audio = document.getElementById('background-music');
+        // var musicIcon = document.getElementById('music-icon');
+
+        // document.body.addEventListener('click', function() {
+        //     if (audio.paused) {
+        //         audio.volume = 0.5; // 设置音量为 0.5（50% 音量）
+        //         audio.play();
+        //         musicIcon.classList.remove('hidden'); // 显示旋转图标
+        //     } else {
+        //         audio.pause();
+        //         musicIcon.classList.add('hidden'); // 隐藏旋转图标
+        //     }
+        // });
+
+        // // Auto-play audio on scroll (optional)
+        // window.addEventListener('scroll', function() {
+        //     if (!audio.paused) return; // Do not autoplay if audio is already playing
+        //     var element = document.querySelector('.scroll-container');
+        //     var rect = element.getBoundingClientRect();
+        //     var windowHeight = window.innerHeight || document.documentElement.clientHeight;
+        //     if (rect.top < windowHeight && rect.bottom >= 0) {
+        //         audio.play();
+        //         musicIcon.classList.remove('hidden'); // 显示旋转图标
+        //     } else {
+        //         audio.pause();
+        //         musicIcon.classList.add('hidden'); // 隐藏旋转图标
+        //     }
+        // });
+
+        // Lazy load images
+        // let lazyLoadImages = document.querySelectorAll('img.lazy-load');
+        // let lazyLoadThrottleTimeout;
+
+        // function lazyLoad() {
+        //     if (lazyLoadThrottleTimeout) {
+        //         clearTimeout(lazyLoadThrottleTimeout);
+        //     }
+
+        //     lazyLoadThrottleTimeout = setTimeout(function() {
+        //         let scrollTop = window.pageYOffset;
+        //         lazyLoadImages.forEach(function(img) {
+        //             if (img.offsetTop < (window.innerHeight + scrollTop)) {
+        //                 img.src = img.dataset.src;
+        //                 img.classList.remove('lazy-load');
+        //             }
+        //         });
+        //         if (lazyLoadImages.length == 0) {
+        //             document.removeEventListener('scroll', lazyLoad);
+        //             window.removeEventListener('resize', lazyLoad);
+        //             window.removeEventListener('orientationChange', lazyLoad);
+        //         }
+        //     }, 20);
+        // }
+
+        // document.addEventListener('scroll', lazyLoad);
+        // window.addEventListener('resize', lazyLoad);
+        // window.addEventListener('orientationChange', lazyLoad);
+        // document.addEventListener("WeixinJSBridgeReady", () => {video.play()}, false);
+        // });
+
+        // 初始化一个音频类，src资源可以是本地的有额可以是服务器上的
+        var sound1 = new Howl({
+            src: ['lover.mp3'],
+            autoplay: true,
+            loop: true,
+            preload: true,
+        })
+
+        // 音频资源 load 之后通过微信桥接触发播放
+        sound1.on('load', () => {
+            window.WeixinJSBridge && window.WeixinJSBridge.invoke('getNetworkType', {}, () => {
+                sound1.play()
+            }, false)
+        })
+    </script>
+
+    <div class="music-icon"></div>
+
 </body>
- 
-<script>
-  // 初始化一个音频类，src资源可以是本地的有额可以是服务器上的
-  var sound1 = new Howl({
-    src: ['https://take-saas.oss-cn-hangzhou.aliyuncs.com/smile.mp3'],
-    autoplay: true,
-    loop: true,
-    preload: true,
-  })
- 
-  // 音频资源 load 之后通过微信桥接触发播放
-  sound1.on('load', () => {
-    window.WeixinJSBridge && window.WeixinJSBridge.invoke('getNetworkType', {}, () => {
-      sound1.play()
-    }, false)
-  })
- 
-</script>
- 
+
 </html>
