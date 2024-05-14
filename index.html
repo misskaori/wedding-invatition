@@ -34,32 +34,57 @@
         audio {
             display: none; /* Hide the audio player */
         }
+
+        /* Icon styles */
+        .music-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 40px;
+            height: 40px;
+            background-image: url('music-player.png');
+            background-size: cover;
+            border-radius: 50%;
+            animation: rotateIcon 2s linear infinite; /* Animation for continuous rotation */
+        }
+
+        @keyframes rotateIcon {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
     </style>
 </head>
 <body>
 <div class="scroll-container">
     <img src="invitition.png" alt="Long Image">
 </div>
-<audio id="background-music" preload="auto">
-    <source src="lover.mp3" type="audio/mpeg">
+<audio id="background-music" preload="auto" autoplay loop>
+    <source src="path/to/your/music.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
 </audio>
+<!-- Icon for music -->
+<div class="music-icon"></div>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var audio = document.getElementById('background-music');
-        var startTime = 10; // 开始时间（秒）
-        var endTime = 20; // 结束时间（秒）
+        var musicIcon = document.querySelector('.music-icon');
 
-        audio.currentTime = startTime;
+        // 设置音量为 0.5（50% 音量）
+        audio.volume = 0.5;
 
-        audio.addEventListener('timeupdate', function() {
-            if (audio.currentTime >= endTime) {
-                audio.currentTime = startTime; // 重新设置到开始时间
+        // 音量控制按钮
+        musicIcon.addEventListener('click', function() {
+            if (audio.volume === 0) {
+                audio.volume = 0.5; // 如果音量为 0，设置为 50%
+            } else {
+                audio.volume = 0; // 如果音量不为 0，设置为 0（静音）
             }
-        });
-
-        audio.addEventListener('ended', function() {
-            audio.currentTime = startTime; // 确保在音频结束时也重新设置到开始时间
         });
     });
 </script>
