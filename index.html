@@ -30,11 +30,38 @@
             width: 100%;
             height: auto;
         }
+
+        audio {
+            display: none; /* Hide the audio player */
+        }
     </style>
 </head>
 <body>
 <div class="scroll-container">
     <img src="invitition.png" alt="Long Image">
 </div>
+<audio id="background-music" preload="auto">
+    <source src="lover.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+</audio>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var audio = document.getElementById('background-music');
+        var startTime = 10; // 开始时间（秒）
+        var endTime = 20; // 结束时间（秒）
+
+        audio.currentTime = startTime;
+
+        audio.addEventListener('timeupdate', function() {
+            if (audio.currentTime >= endTime) {
+                audio.currentTime = startTime; // 重新设置到开始时间
+            }
+        });
+
+        audio.addEventListener('ended', function() {
+            audio.currentTime = startTime; // 确保在音频结束时也重新设置到开始时间
+        });
+    });
+</script>
 </body>
 </html>
