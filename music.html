@@ -1,10 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
+ 
 <head>
-    <meta charset="UTF-8">
-    <title>music</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
+  <script src="//res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+  <title>Liu & Sun Wedding Day</title>
 </head>
+ 
 <body>
-<audio src="lover.mp3" loop="loop" controls="controls" autoplay="autoplay"></audio>
+  使用WeixinJSBridge 安卓苹果均能自动播放
 </body>
+ 
+<script>
+  // 初始化一个音频类，src资源可以是本地的有额可以是服务器上的
+  var sound1 = new Howl({
+    src: ['https://take-saas.oss-cn-hangzhou.aliyuncs.com/smile.mp3'],
+    autoplay: true,
+    loop: true,
+    preload: true,
+  })
+ 
+  // 音频资源 load 之后通过微信桥接触发播放
+  sound1.on('load', () => {
+    window.WeixinJSBridge && window.WeixinJSBridge.invoke('getNetworkType', {}, () => {
+      sound1.play()
+    }, false)
+  })
+ 
+</script>
+ 
 </html>
