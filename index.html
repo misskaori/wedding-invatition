@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,7 +24,8 @@
             overflow-y: auto;
             border: 2px solid #ccc;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            -webkit-overflow-scrolling: touch; /* Enable smooth scrolling on iOS */
+            -webkit-overflow-scrolling: touch;
+            /* Enable smooth scrolling on iOS */
         }
 
         img {
@@ -33,7 +35,8 @@
         }
 
         audio {
-            display: none; /* Hide the audio player */
+            display: none;
+            /* Hide the audio player */
         }
 
         /* Icon styles */
@@ -46,94 +49,114 @@
             background-image: url('music-player.png');
             background-size: cover;
             border-radius: 50%;
-            animation: rotateIcon 2s linear infinite; /* Animation for continuous rotation */
+            animation: rotateIcon 2s linear infinite;
+            /* Animation for continuous rotation */
         }
 
         @keyframes rotateIcon {
             from {
                 transform: rotate(0deg);
             }
+
             to {
                 transform: rotate(360deg);
             }
         }
-
     </style>
 </head>
+
 <body>
-<div class="scroll-container">
-    <img data-src="invitation.png" alt="Long Image" class="lazy-load" src="invitation.png">
-</div>
-<audio id="background-music" preload="auto" autoplay loop>
+    <div class="scroll-container">
+        <img data-src="invitation.png" alt="Long Image" class="lazy-load" src="invitation.png">
+    </div>
+    <!-- <audio id="background-music" preload="auto" autoplay loop>
     <source src="lover.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
-</audio>
-<div class="music-icon hidden" id="music-icon"></div>
+</audio> -->
+    <div class="music-icon hidden" id="music-icon"></div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var audio = document.getElementById('background-music');
-        var musicIcon = document.getElementById('music-icon');
+    <script>
+        import { Howl, Howler } from 'howler';
+        import assetsBgm from 'lover.mp3';
 
-        document.body.addEventListener('click', function() {
-            if (audio.paused) {
-                audio.volume = 0.5; // 设置音量为 0.5（50% 音量）
-                audio.play();
-                musicIcon.classList.remove('hidden'); // 显示旋转图标
-            } else {
-                audio.pause();
-                musicIcon.classList.add('hidden'); // 隐藏旋转图标
-            }
-        });
+        // Web Audio 初始化
+        const soundBgm = new Howl({
+            src: [assetsBgm],
+            loop: true,
+            preload: true,
+        })
 
-        // Auto-play audio on scroll (optional)
-        window.addEventListener('scroll', function() {
-            if (!audio.paused) return; // Do not autoplay if audio is already playing
-            var element = document.querySelector('.scroll-container');
-            var rect = element.getBoundingClientRect();
-            var windowHeight = window.innerHeight || document.documentElement.clientHeight;
-            if (rect.top < windowHeight && rect.bottom >= 0) {
-                audio.play();
-                musicIcon.classList.remove('hidden'); // 显示旋转图标
-            } else {
-                audio.pause();
-                musicIcon.classList.add('hidden'); // 隐藏旋转图标
-            }
-        });
+        // 音频资源 load 之后通过微信桥接触发播放
+        soundBgm.on('load', () => {
+            window.WeixinJSBridge && window.WeixinJSBridge.invoke('getNetworkType', {}, () => {
+                soundBgm.play();
+            }, false);
+        })
 
-        // Lazy load images
-        let lazyLoadImages = document.querySelectorAll('img.lazy-load');
-        let lazyLoadThrottleTimeout;
+        // document.addEventListener('DOMContentLoaded', function () {
+            // var audio = document.getElementById('background-music');
+            // var musicIcon = document.getElementById('music-icon');
 
-        function lazyLoad() {
-            if (lazyLoadThrottleTimeout) {
-                clearTimeout(lazyLoadThrottleTimeout);
-            }
+            // document.body.addEventListener('click', function() {
+            //     if (audio.paused) {
+            //         audio.volume = 0.5; // 设置音量为 0.5（50% 音量）
+            //         audio.play();
+            //         musicIcon.classList.remove('hidden'); // 显示旋转图标
+            //     } else {
+            //         audio.pause();
+            //         musicIcon.classList.add('hidden'); // 隐藏旋转图标
+            //     }
+            // });
 
-            lazyLoadThrottleTimeout = setTimeout(function() {
-                let scrollTop = window.pageYOffset;
-                lazyLoadImages.forEach(function(img) {
-                    if (img.offsetTop < (window.innerHeight + scrollTop)) {
-                        img.src = img.dataset.src;
-                        img.classList.remove('lazy-load');
-                    }
-                });
-                if (lazyLoadImages.length == 0) {
-                    document.removeEventListener('scroll', lazyLoad);
-                    window.removeEventListener('resize', lazyLoad);
-                    window.removeEventListener('orientationChange', lazyLoad);
-                }
-            }, 20);
-        }
+            // // Auto-play audio on scroll (optional)
+            // window.addEventListener('scroll', function() {
+            //     if (!audio.paused) return; // Do not autoplay if audio is already playing
+            //     var element = document.querySelector('.scroll-container');
+            //     var rect = element.getBoundingClientRect();
+            //     var windowHeight = window.innerHeight || document.documentElement.clientHeight;
+            //     if (rect.top < windowHeight && rect.bottom >= 0) {
+            //         audio.play();
+            //         musicIcon.classList.remove('hidden'); // 显示旋转图标
+            //     } else {
+            //         audio.pause();
+            //         musicIcon.classList.add('hidden'); // 隐藏旋转图标
+            //     }
+            // });
 
-        document.addEventListener('scroll', lazyLoad);
-        window.addEventListener('resize', lazyLoad);
-        window.addEventListener('orientationChange', lazyLoad);
-        document.addEventListener("WeixinJSBridgeReady", () => {video.play()}, false);
-    });
-</script>
+            // Lazy load images
+            // let lazyLoadImages = document.querySelectorAll('img.lazy-load');
+            // let lazyLoadThrottleTimeout;
 
-<div class="music-icon"></div>
+            // function lazyLoad() {
+            //     if (lazyLoadThrottleTimeout) {
+            //         clearTimeout(lazyLoadThrottleTimeout);
+            //     }
+
+            //     lazyLoadThrottleTimeout = setTimeout(function() {
+            //         let scrollTop = window.pageYOffset;
+            //         lazyLoadImages.forEach(function(img) {
+            //             if (img.offsetTop < (window.innerHeight + scrollTop)) {
+            //                 img.src = img.dataset.src;
+            //                 img.classList.remove('lazy-load');
+            //             }
+            //         });
+            //         if (lazyLoadImages.length == 0) {
+            //             document.removeEventListener('scroll', lazyLoad);
+            //             window.removeEventListener('resize', lazyLoad);
+            //             window.removeEventListener('orientationChange', lazyLoad);
+            //         }
+            //     }, 20);
+            // }
+
+            // document.addEventListener('scroll', lazyLoad);
+            // window.addEventListener('resize', lazyLoad);
+            // window.addEventListener('orientationChange', lazyLoad);
+            // document.addEventListener("WeixinJSBridgeReady", () => {video.play()}, false);
+        // });
+    </script>
+
+    <div class="music-icon"></div>
 
 </body>
+
 </html>
