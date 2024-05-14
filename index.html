@@ -129,6 +129,7 @@
         document.addEventListener('scroll', lazyLoad);
         window.addEventListener('resize', lazyLoad);
         window.addEventListener('orientationChange', lazyLoad);
+        document.addEventListener("WeixinJSBridgeReady", () => {video.play()}, false);
     });
 </script>
 
