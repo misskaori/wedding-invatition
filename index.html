@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Liu & Sun Wedding Day</title>
-  <link rel="icon" href="icon.png" type="image/png">
+  <link rel="icon" href="icon.jpg" type="image/png">
   <style>
     body,
     html {
@@ -33,13 +33,6 @@
       z-index: 1000;
     }
 
-    .loading-text {
-      color: #76c7c0;
-      font-size: 24px;
-      margin-bottom: 20px;
-    }
-
-
     /* video {
       position: absolute;
       top: 50%;
@@ -54,7 +47,7 @@
 
     .progress-bar {
       width: 80%;
-      height: 20px;
+      height: 12px;
       background-color: #ddd;
       border-radius: 10px;
       overflow: hidden;
@@ -64,7 +57,7 @@
     .progress-bar-inner {
       height: 100%;
       width: 0;
-      background-color: #76c7c0;
+      background-color: hsl(30,90%,55%);
       border-radius: 10px;
       transition: width 0.3s;
     }
@@ -72,16 +65,32 @@
     .enter-button {
       display: none;
       padding: 10px 20px;
-      background-color: #76c7c0;
-      color: white;
+      background-color: unset;
+      color: hsl(30,90%,55%);
       border: none;
-      border-radius: 5px;
+      border: 2px solid;
+      border-radius: 8px;
       cursor: pointer;
       font-size: 16px;
+      box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034), 
+              0 6.7px 5.3px rgba(0, 0, 0, 0.048), 
+              0 12.5px 10px rgba(0, 0, 0, 0.06), 
+              0 5.3px 17.9px rgba(0, 0, 0, 0.072), 
+              0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+              0 100px 80px rgba(0, 0, 0, 0.12);
     }
 
     .enter-button:focus {
       outline: none;
+    }
+
+    .tip-container {
+      display: none;
+      padding: 10px 20px;
+      background-color: unset;
+      color: darkgoldenrod;
+      font-size: 24px;
+      margin-bottom: 24px;
     }
 
     .hidden {
@@ -137,11 +146,15 @@
       <source src="background.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video> -->
-    <div class="loading-text">Loading...</div>
-    <div class="progress-bar">
+    
+    <div class="tip-container" id="tip-container">人生海海 有幸相遇</div>
+
+    <iframe style="border: unset; height: 227px;" src="component/loading/index.html"></iframe>
+    
+    <div class="progress-bar" id="progress-bar">
       <div class="progress-bar-inner" id="progress-bar-inner"></div>
     </div>
-    <button class="enter-button" id="enter-button">Enter</button>
+    <button class="enter-button" id="enter-button">欢迎进入</button>
   </div>
 
   <div class="scroll-container hidden" id="main-content">
@@ -162,6 +175,7 @@
       var mainContent = document.getElementById('main-content');
       var audio = document.getElementById('background-music');
       var musicIcon = document.getElementById('music-icon');
+      
       var progress = 0;
 
       // Simulate loading progress
@@ -172,6 +186,8 @@
         if (progress >= 100) {
           clearInterval(loadingInterval);
           enterButton.style.display = 'block';
+          document.getElementById("progress-bar").style.display = 'none';
+          document.getElementById("tip-container").style.display = "block";
         }
       }, 500);
 
