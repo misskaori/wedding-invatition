@@ -66,7 +66,7 @@
       display: none;
       padding: 10px 20px;
       background-color: unset;
-      color: hsl(30,90%,55%);
+      color: hsl(30, 90%, 55%);
       border: none;
       border: 2px solid;
       border-radius: 8px;
@@ -137,6 +137,14 @@
     .hidden {
       display: none;
     }
+
+    .en-font {
+      color: dimgray;
+      font-family: Lucida Console, Courier New, monospace;
+      font-style: oblique;
+      padding: 12px;
+    }
+
   </style>
 </head>
 
@@ -148,8 +156,8 @@
     </video> -->
     
     <div class="tip-container" id="tip-container">人生海海 有幸相遇</div>
-
-    <iframe style="border: unset; height: 227px;" src="component/loading/index.html"></iframe>
+    <div class="en-font" id="en-font-p1">Welcome to our wedding</div>
+    <div class="en-font" id="en-font-p2" style="display: none;">婚礼邀请函</div>
     
     <div class="progress-bar" id="progress-bar">
       <div class="progress-bar-inner" id="progress-bar-inner"></div>
@@ -188,6 +196,8 @@
           enterButton.style.display = 'block';
           document.getElementById("progress-bar").style.display = 'none';
           document.getElementById("tip-container").style.display = "block";
+          document.getElementById("en-font-p1").style.display = "none";
+          document.getElementById("en-font-p2").style.display = "block";
         }
       }, 500);
 
